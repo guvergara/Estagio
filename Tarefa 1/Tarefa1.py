@@ -4,10 +4,10 @@ import zipfile
 import os
 
 def baixar_pdf(url_pdf, nome_arquivo):
-        page_pdf = requests.get(url_pdf, stream=True)  
+        page_pdf = requests.get(url_pdf, stream=True)  #ativa o streaming para permitir o download por partes
         if page_pdf.status_code == 200:
             with open(nome_arquivo, 'wb') as file:
-                for chunk in page_pdf.iter_content(1024):  
+                for chunk in page_pdf.iter_content(1024):  #define que cada parte do download tera 1024 bytes
                     file.write(chunk)
             print(f"Download concluído: {nome_arquivo}")
         else:
