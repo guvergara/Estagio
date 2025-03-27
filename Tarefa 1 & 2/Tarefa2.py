@@ -1,5 +1,6 @@
 import pdfplumber
 import pandas as pd
+import zipfile
 
 pdf_name = "Anexo1.pdf"
 
@@ -51,5 +52,12 @@ if tables:
     final_df.to_csv(csv_filename, index=False, encoding="utf-8-sig", sep=";")
 
     print(f"As tabelas foram salvas corretamente em '{csv_filename}'.")
+
+    with zipfile.ZipFile("Teste_Gustavo_Vergara_Vieira.zip", 'w', zipfile.ZIP_DEFLATED) as zipf:
+        zipf.write(csv_filename)
+
+    print("O arquivo foi zipado com sucesso")
 else:
     print("Nenhuma tabela encontrada.")
+
+
