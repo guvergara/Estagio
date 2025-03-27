@@ -1,9 +1,7 @@
 USE `Planos_de_saude`;
 
-SET FOREIGN_KEY_CHECKS = 0;
 TRUNCATE TABLE operadoras_ativas;
 TRUNCATE TABLE demonstracoes_contabeis;
-SET FOREIGN_KEY_CHECKS = 1;
 SHOW COLUMNS FROM operadoras_ativas;
 select*from operadoras_ativas;
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/Relatorio_cadop.csv' INTO TABLE operadoras_ativas
