@@ -4,6 +4,7 @@
     <div class="search-container"> 
       <input v-model="searchQuery" @keyup.enter="searchOperadora" placeholder="Digite o nome da operadora" class =  "search-input" />
       <button @click="searchOperadora" class="search-button">Buscar</button>
+      <button @click="downloadPostmanCollection" class="download-button">Baixar Coleção Postman</button>
     </div>  
 
     <div v-if="loading">Carregando...</div>
@@ -30,6 +31,7 @@ export default {
       operadoras: [],
       loading: false,
       error: null,
+      lastRequest: null,
     };
   },
   methods: {
@@ -40,12 +42,11 @@ export default {
       this.error = null;
       this.operadoras = [];
 
-      try {
-        const response = await axios.get(
-          `http://127.0.0.1:5000/search-operadora?q=${encodeURIComponent(this.searchQuery)}`,
-          { transformResponse: [data => data] }
-        );
+      const url = `http://127.0.0.1:5000/search-operadora?q=${encodeURIComponent(this.searchQuery)}`;
+      this.lastRequest = url;
 
+      try {
+        const response = await axios.get(url, { transformResponse: [data => data] });
         console.log('Raw API response:', response.data);
 
         const sanitizedData = this.sanitizeJson(response.data);
@@ -68,10 +69,61 @@ export default {
     },
     formatValue(val) {
       return val === null || val === undefined ? 'Não disponível' : val;
+    },
+    downloadPostmanCollection() {
+      if (!this.lastRequest) {
+        alert("Nenhuma requisição foi feita ainda.");
+        return;
+      }
+
+      const collection = {
+        info: {
+          name: "Teste de API - Operadoras",
+          schema: "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+        },
+        item: [
+          {
+            name: "Buscar Operadora",
+            request: {
+              method: "GET",
+              url: {
+                raw: this.lastRequest,
+                protocol: "http",
+                host: ["127.0.0.1"],
+                port: "5000",
+                path: ["search-operadora"],
+                query: [
+                  {
+                    key: "q",
+                    value: this.searchQuery
+                  }
+                ]
+              },
+              header: [
+                {
+                  key: "Content-Type",
+                  value: "application/json"
+                }
+              ]
+            }
+          }
+        ]
+      };
+
+      const blob = new Blob([JSON.stringify(collection, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "postman_collection.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
   }
 };
 </script>
+
 
 <style>
 .search-container {
