@@ -1,0 +1,45 @@
+{
+	"info": {
+		"_postman_id": "2da9ab7c-0408-4221-bdb5-0f7d17065a03",
+		"name": "API Test - Operadoras",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43569681",
+		"_collection_link": "https://gustavo-2643075.postman.co/workspace/Gustavo's-Workspace~1ce7887a-69ce-4a05-85a5-bd9a470bada8/collection/43569681-2da9ab7c-0408-4221-bdb5-0f7d17065a03?action=share&source=collection_link&creator=43569681"
+	},
+	"item": [
+		{
+			"name": "Buscar Operadora",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5000/search-operadora?q=unimed",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"search-operadora"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "unimed"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
